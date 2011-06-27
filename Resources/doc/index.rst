@@ -1,7 +1,7 @@
-Provides an akismet service.
-Uses ``Zend\\Service\\Akismet\\Akismet`` for the backend.
+Provides a service to interact with http://akismet.com
+Uses ``Zend\Service\Akismet\Akismet`` for the backend.
 Automatically grabs the request data.
-Allows to switch to a stub implementation, useful for fixtures and tests.
+Allows to switch to a stub implementation for fixtures and tests.
 Can silent exceptions on production.
 
 Installation
