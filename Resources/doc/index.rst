@@ -1,0 +1,1 @@
+Provides an akismet service.
