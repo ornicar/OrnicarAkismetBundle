@@ -1,4 +1,4 @@
-Provides an akismet service.
+Provides integration with [Akismet](http://akismet.com)
 
 For documentation, see:
 
