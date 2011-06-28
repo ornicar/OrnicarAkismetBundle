@@ -24,8 +24,8 @@ class Configuration
 
         $treeBuilder->root('ornicar_akismet', 'array')
             ->children()
-                ->scalarNode('url')->end()
-                ->scalarNode('api_key')->end()
+                ->scalarNode('url')->isRequired()->end()
+                ->scalarNode('api_key')->isRequired()->end()
                 ->scalarNode('service')->defaultValue('ornicar_akismet.real')->end()
                 ->scalarNode('throw_exceptions')->defaultValue('%kernel.debug%')
             ->end()
