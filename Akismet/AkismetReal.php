@@ -3,8 +3,8 @@
 namespace Ornicar\AkismetBundle\Akismet;
 
 use Symfony\Component\HttpFoundation\Request;
-use Zend\Service\Akismet\Akismet as ZendAkismet;
 use Zend\Service\Akismet\Exception as AkismetException;
+use Ornicar\AkismetBundle\Adapter\AkismetAdapterInterface;
 
 /**
  * Detects spam by querying the Akismet service.
@@ -19,9 +19,9 @@ class AkismetReal implements AkismetInterface
     protected $request;
 
     /**
-     * @var Akismet
+     * @var AkismetAdapterInterface
      */
-    protected $akismet;
+    protected $adapter;
 
     /**
      * Whether or not to throw the akismet exceptions
@@ -33,13 +33,13 @@ class AkismetReal implements AkismetInterface
     /**
      * Constructor.
      *
-     * @param Akismet $akismet
+     * @param AkismetAdapterInterface $adapter
      * @param Request $request
      * @param boolean $throwExceptions if false, exceptions are just ignored
      */
-    public function __construct(ZendAkismet $akismet, Request $request, $throwExceptions)
+    public function __construct(AkismetAdapterInterface $adapter, Request $request, $throwExceptions)
     {
-        $this->akismet = $akismet;
+        $this->adapter = $adapter;
         $this->request = $request;
         $this->throwExceptions = $throwExceptions;
     }
@@ -61,11 +61,11 @@ class AkismetReal implements AkismetInterface
         $fullData = array_merge($this->getRequestData(), $data);
 
         if ($this->throwExceptions) {
-            return $this->akismet->isSpam($fullData);
+            return $this->adapter->isSpam($fullData);
         }
 
         try {
-            return $this->akismet->isSpam($fullData);
+            return $this->adapter->isSpam($fullData);
         } catch (AkismetException $e) {
             return false;
         }

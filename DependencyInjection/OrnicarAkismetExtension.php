@@ -30,13 +30,14 @@ class OrnicarAkismetExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('config.xml');
 
-        $container->getDefinition('ornicar_akismet.zend_akismet')
-            ->replaceArgument(0, $config['api_key'])
-            ->replaceArgument(1, $config['url']);
+        $container->getDefinition('ornicar_akismet.adapter.buzz')
+            ->replaceArgument(0, $config['url'])
+            ->replaceArgument(1, $config['api_key']);
 
         $container->getDefinition('ornicar_akismet.akismet_real')
             ->replaceArgument(2, $config['throw_exceptions']);
 
         $container->setAlias('ornicar_akismet', $config['service']);
+        $container->setAlias('ornicar_akismet.adapter', $config['adapter']);
     }
 }
