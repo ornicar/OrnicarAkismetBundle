@@ -26,7 +26,7 @@ class Configuration
             ->children()
                 ->scalarNode('url')->isRequired()->end()
                 ->scalarNode('api_key')->isRequired()->end()
-                ->scalarNode('service')->defaultValue('ornicar_akismet.real')->end()
+                ->scalarNode('service')->defaultValue('ornicar_akismet.akismet_real')->end()
                 ->scalarNode('throw_exceptions')->defaultValue('%kernel.debug%')
             ->end()
         ->end();
