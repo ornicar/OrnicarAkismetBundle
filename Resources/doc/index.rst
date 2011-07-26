@@ -1,11 +1,16 @@
 Provides a service to interact with http://akismet.com
-Uses ``Zend\Service\Akismet\Akismet`` for the backend.
+Uses ``Buzz`` to send the HTTP request.
 Automatically grabs the request data.
 Allows to switch to a stub implementation for fixtures and tests.
 Can silent exceptions on production.
 
 Installation
 ============
+
+Install Buzz
+------------
+
+Buzz is a lightweight HTTP client for PHP 5.3. Get it here https://github.com/kriswallsmith/Buzz
 
 Add AkismetBundle to your src/ dir
 -------------------------------------

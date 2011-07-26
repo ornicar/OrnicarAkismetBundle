@@ -37,15 +37,16 @@ class AkismetBuzzAdapter implements AkismetAdapterInterface
     {
         $data['blog'] = $this->blogUrl;
 
-        $request = new Message\PostRequest('POST', '/1.1/comment-check', $this->getHost());
-        $request->setFormData($data);
-        $request->setPostHeaders();
+        $request = new Message\Request('POST', '/1.1/comment-check', $this->getHost());
+        $request->setContent(http_build_query($data));
+        $request->addHeader('Content-Type: application/x-www-form-urlencoded');
+        $request->addHeader(sprintf('Content-Length: %d', strlen($request->getContent())));
         $response = new Message\Response();
 
         $client = new Client\Curl();
         $client->send($request, $response);
 
-        var_dump($this->getHost(), $data, $response->getStatusCode(), $response->__toString());die;
+        return 'true' == $response->getContent();
     }
 
     protected function getHost()
