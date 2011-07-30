@@ -3,7 +3,6 @@
 namespace Ornicar\AkismetBundle\Akismet;
 
 use Symfony\Component\HttpFoundation\Request;
-use Zend\Service\Akismet\Exception as AkismetException;
 use Ornicar\AkismetBundle\Adapter\AkismetAdapterInterface;
 
 /**
@@ -66,7 +65,7 @@ class AkismetReal implements AkismetInterface
 
         try {
             return $this->adapter->isSpam($fullData);
-        } catch (AkismetException $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
