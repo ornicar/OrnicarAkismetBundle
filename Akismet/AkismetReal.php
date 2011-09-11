@@ -4,6 +4,7 @@ namespace Ornicar\AkismetBundle\Akismet;
 
 use Symfony\Component\HttpFoundation\Request;
 use Ornicar\AkismetBundle\Adapter\AkismetAdapterInterface;
+use Symfony\Component\HttpKernel\Log\LoggerInterface;
 
 /**
  * Detects spam by querying the Akismet service.
@@ -30,17 +31,25 @@ class AkismetReal implements AkismetInterface
     protected $throwExceptions;
 
     /**
+     * Optional logger instance
+     *
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * Constructor.
      *
      * @param AkismetAdapterInterface $adapter
      * @param Request $request
      * @param boolean $throwExceptions if false, exceptions are just ignored
      */
-    public function __construct(AkismetAdapterInterface $adapter, Request $request, $throwExceptions)
+    public function __construct(AkismetAdapterInterface $adapter, Request $request, $throwExceptions, LoggerInterface $logger = null)
     {
         $this->adapter = $adapter;
         $this->request = $request;
         $this->throwExceptions = $throwExceptions;
+        $this->logger = $logger;
     }
 
     /**
@@ -66,6 +75,10 @@ class AkismetReal implements AkismetInterface
         try {
             return $this->adapter->isSpam($fullData);
         } catch (\Exception $e) {
+            if ($this->logger) {
+                $this->logger->warn(sprintf('%s: %s(%s)', get_class($this), get_class($e), $e->getMessage()));
+            }
+
             return false;
         }
     }

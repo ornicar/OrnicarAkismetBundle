@@ -12,6 +12,7 @@
             <argument type="service" id="ornicar_akismet.adapter" />
             <argument type="service" id="request" />
             <argument /> <!-- throw exceptions -->
+            <argument type="service" id="logger" on-invalid="null" />
         </service>
 
         <service id="ornicar_akismet.adapter.buzz" class="Ornicar\AkismetBundle\Adapter\AkismetBuzzAdapter" public="false">
