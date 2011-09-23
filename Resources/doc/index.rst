@@ -56,7 +56,7 @@ You need an api key to use Akismet, and a site url::
 
     ornicar_akismet:
         api_key:        xxxxxxxxxxxxx
-        site_url:       http://lichess.org
+        url:            http://lichess.org
 
 Usage
 =====
