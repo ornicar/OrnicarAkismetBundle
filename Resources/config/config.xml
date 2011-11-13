@@ -20,6 +20,11 @@
             <argument /> <!-- api key -->
         </service>
 
+        <service id="ornicar_akismet.adapter.guzzle" class="Ornicar\AkismetBundle\Adapter\AkismetGuzzleAdapter" public="false">
+            <argument /> <!-- site url -->
+            <argument /> <!-- api key -->
+        </service>
+
     </services>
 
 </container>
