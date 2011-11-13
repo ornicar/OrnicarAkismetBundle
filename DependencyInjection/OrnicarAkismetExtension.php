@@ -34,6 +34,10 @@ class OrnicarAkismetExtension extends Extension
             ->replaceArgument(0, $config['url'])
             ->replaceArgument(1, $config['api_key']);
 
+        $container->getDefinition('ornicar_akismet.adapter.guzzle')
+            ->replaceArgument(0, $config['url'])
+            ->replaceArgument(1, $config['api_key']);
+
         $container->getDefinition('ornicar_akismet.akismet_real')
             ->replaceArgument(2, $config['throw_exceptions']);
 

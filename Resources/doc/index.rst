@@ -1,5 +1,5 @@
 Provides a service to interact with http://akismet.com
-Uses ``Buzz`` to send the HTTP request.
+Uses ``Buzz`` or ``Guzzle`` to send the HTTP request.
 Automatically grabs the request data.
 Allows to switch to a stub implementation for fixtures and tests.
 Can silent exceptions on production.
@@ -7,10 +7,18 @@ Can silent exceptions on production.
 Installation
 ============
 
-Install Buzz
-------------
+Install an HTTP Adapter
+-----------------------
+
+Buzz
+~~~~
 
 Buzz is a lightweight HTTP client for PHP 5.3. Get it here https://github.com/kriswallsmith/Buzz
+
+Guzzle
+~~~~~~
+
+Guzzle is a PHP HTTP client and framework for building REST web service clients: https://github.com/guzzle/guzzle
 
 Add AkismetBundle to your src/ dir
 -------------------------------------
