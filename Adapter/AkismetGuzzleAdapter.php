@@ -34,7 +34,7 @@ class AkismetGuzzleAdapter implements AkismetAdapterInterface
     public function isSpam(array $data)
     {
         $data['blog'] = $this->client->getConfig('blog_url');
-        $request = $client->post('/1.1/comment-check', null, http_build_query($data));
+        $request = $this->client->post('/1.1/comment-check', null, http_build_query($data));
 
         return 'true' == (string) $request->send()->getBody();
     }
