@@ -19,9 +19,9 @@ class AkismetValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         $accessor = PropertyAccess::getPropertyAccessor();
-		$author  = $accessor->getValue($value, $constraint->author);
-		$content = $accessor->getValue($value, $constraint->content);
-		
+        $author  = $accessor->getValue($value, $constraint->author);
+        $content = $accessor->getValue($value, $constraint->content);
+        
         $isSpam = $this->akismet->isSpam(array(
             'comment_author'  => $author,
             'comment_content' => $content
