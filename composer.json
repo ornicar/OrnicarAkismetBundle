@@ -14,11 +14,10 @@
     ],
 
     "require": {
-        "php": ">=5.3.0",
-        "kriswallsmith/buzz" : "*"
-
+        "php": ">=5.3.0"
     },
     "suggests": {
+        "kriswallsmith/buzz" : "*",
         "guzzle/guzzle": "*"
     },
 
