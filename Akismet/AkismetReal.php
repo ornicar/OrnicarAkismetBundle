@@ -4,19 +4,21 @@ namespace Ornicar\AkismetBundle\Akismet;
 
 use Symfony\Component\HttpFoundation\Request;
 use Ornicar\AkismetBundle\Adapter\AkismetAdapterInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 
 /**
  * Detects spam by querying the Akismet service.
  *
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
+ * @author Jean-Louis Pirson <jl.pirson@grizzlylab.be>
  */
 class AkismetReal implements AkismetInterface
 {
     /**
      * @var Request
      */
-    protected $request;
+    protected $requestStack;
 
     /**
      * @var AkismetAdapterInterface
@@ -41,13 +43,14 @@ class AkismetReal implements AkismetInterface
      * Constructor.
      *
      * @param AkismetAdapterInterface $adapter
-     * @param Request $request
+     * @param RequestStack $requestStack
      * @param boolean $throwExceptions if false, exceptions are just ignored
      */
-    public function __construct(AkismetAdapterInterface $adapter, Request $request, $throwExceptions, LoggerInterface $logger = null)
+    public function __construct(AkismetAdapterInterface $adapter, RequestStack $requestStack, $throwExceptions, LoggerInterface $logger = null)
     {
         $this->adapter = $adapter;
-        $this->request = $request;
+        $this->requestStack = $requestStack;
+        $this->currentRequest = $requestStack->getCurrentRequest();
         $this->throwExceptions = $throwExceptions;
         $this->logger = $logger;
     }
@@ -91,10 +94,10 @@ class AkismetReal implements AkismetInterface
     protected function getRequestData()
     {
         return array(
-            'permalink'  => $this->request->getUri(),
-            'user_ip'    => $this->request->getClientIp(),
-            'user_agent' => $this->request->server->get('HTTP_USER_AGENT'),
-            'referrer'   => $this->request->server->get('HTTP_REFERER'),
+            'permalink' => $this->currentRequest->getUri(),
+            'user_ip' => $this->currentRequest->getClientIp(),
+            'user_agent' => $this->currentRequest->get('HTTP_USER_AGENT'),
+            'referrer' => $this->currentRequest->get('HTTP_REFERER')
         );
     }
 }

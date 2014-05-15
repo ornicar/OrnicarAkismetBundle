@@ -15,8 +15,8 @@
 
     "require": {
         "php": ">=5.3.0",
-        "kriswallsmith/buzz" : "*"
-
+        "kriswallsmith/buzz" : "*",
+        "symfony/symfony": "2.4.*"
     },
     "suggests": {
         "guzzle/guzzle": "*"
