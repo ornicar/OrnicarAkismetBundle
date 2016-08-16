@@ -2,9 +2,9 @@
 
 namespace Ornicar\AkismetBundle\Akismet;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Ornicar\AkismetBundle\Adapter\AkismetAdapterInterface;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Detects spam by querying the Akismet service.
@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
 class AkismetReal implements AkismetInterface
 {
     /**
-     * @var Request
+     * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request;
 
@@ -41,13 +41,13 @@ class AkismetReal implements AkismetInterface
      * Constructor.
      *
      * @param AkismetAdapterInterface $adapter
-     * @param Request $request
+     * @param RequestStack $requestStack
      * @param boolean $throwExceptions if false, exceptions are just ignored
      */
-    public function __construct(AkismetAdapterInterface $adapter, Request $request, $throwExceptions, LoggerInterface $logger = null)
+    public function __construct(AkismetAdapterInterface $adapter, RequestStack $requestStack, $throwExceptions, LoggerInterface $logger = null)
     {
         $this->adapter = $adapter;
-        $this->request = $request;
+        $this->request = $requestStack->getCurrentRequest();
         $this->throwExceptions = $throwExceptions;
         $this->logger = $logger;
     }
