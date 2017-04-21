@@ -1,5 +1,5 @@
 {
-    "name": "ornicar/akismet-bundle",
+    "name": "umpirsky/akismet-bundle",
     "description": "Akismet Integration for symfony",
     "keywords": ["package", "symfony", "akismet", "spam"],
     "homepage": "https://github.com/ornicar/OrnicarAkismetBundle",
@@ -10,6 +10,10 @@
             "name": "Thibault Duplessis",
             "email": "thibault.duplessis@gmail.com",
             "homepage": "http://ornicar.github.com"
+        },
+        {
+            "name": "Saša Stamenković",
+            "email": "umpirsky@gmail.com"
         }
     ],
 
