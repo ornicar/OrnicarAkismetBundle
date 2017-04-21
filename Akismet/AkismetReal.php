@@ -5,6 +5,7 @@ namespace Ornicar\AkismetBundle\Akismet;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Ornicar\AkismetBundle\Adapter\AkismetAdapterInterface;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 /**
  * Detects spam by querying the Akismet service.
@@ -91,7 +92,7 @@ class AkismetReal implements AkismetInterface
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
-            throw new \RuntimeException('No current request found.');
+            throw new LogicException('No current request found.');
         }
 
         return array(
