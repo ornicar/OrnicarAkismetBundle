@@ -4,7 +4,7 @@ namespace Ornicar\AkismetBundle\Akismet;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Ornicar\AkismetBundle\Adapter\AkismetAdapterInterface;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 /**
