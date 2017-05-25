@@ -15,11 +15,6 @@
             <argument type="service" id="logger" on-invalid="null" />
         </service>
 
-        <service id="ornicar_akismet.adapter.buzz" class="Ornicar\AkismetBundle\Adapter\AkismetBuzzAdapter" public="false">
-            <argument /> <!-- site url -->
-            <argument /> <!-- api key -->
-        </service>
-
         <service id="ornicar_akismet.adapter.guzzle" class="Ornicar\AkismetBundle\Adapter\AkismetGuzzleAdapter" public="false">
             <argument /> <!-- site url -->
             <argument /> <!-- api key -->
