@@ -2,9 +2,10 @@
 
 namespace Ornicar\AkismetBundle\Akismet;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Ornicar\AkismetBundle\Adapter\AkismetAdapterInterface;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 /**
  * Detects spam by querying the Akismet service.
@@ -14,9 +15,9 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
 class AkismetReal implements AkismetInterface
 {
     /**
-     * @var Request
+     * @var RequestStack
      */
-    protected $request;
+    protected $requestStack;
 
     /**
      * @var AkismetAdapterInterface
@@ -38,16 +39,15 @@ class AkismetReal implements AkismetInterface
     protected $logger;
 
     /**
-     * Constructor.
-     *
      * @param AkismetAdapterInterface $adapter
-     * @param Request $request
+     * @param RequestStack $requestStack
      * @param boolean $throwExceptions if false, exceptions are just ignored
+     * @param LoggerInterface|null $logger
      */
-    public function __construct(AkismetAdapterInterface $adapter, Request $request, $throwExceptions, LoggerInterface $logger = null)
+    public function __construct(AkismetAdapterInterface $adapter, RequestStack $requestStack, $throwExceptions, LoggerInterface $logger = null)
     {
         $this->adapter = $adapter;
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->throwExceptions = $throwExceptions;
         $this->logger = $logger;
     }
@@ -64,7 +64,7 @@ class AkismetReal implements AkismetInterface
      *
      * @return bool true if it is spam
      */
-    public function isSpam(array $data)
+    public function isSpam(array $data): bool
     {
         $fullData = array_merge($this->getRequestData(), $data);
 
@@ -83,6 +83,25 @@ class AkismetReal implements AkismetInterface
         }
     }
 
+    function submitSpam(array $data)
+    {
+        $fullData = array_merge($this->getRequestData(), $data);
+
+        if ($this->throwExceptions) {
+            return $this->adapter->submitSpam($fullData);
+        }
+
+        try {
+            return $this->adapter->submitSpam($fullData);
+        } catch (\Exception $e) {
+            if ($this->logger) {
+                $this->logger->warn(sprintf('%s: %s(%s)', get_class($this), get_class($e), $e->getMessage()));
+            }
+
+            return false;
+        }
+    }
+
     /**
      * Compiles a list of information from the request
      *
@@ -90,11 +109,16 @@ class AkismetReal implements AkismetInterface
      */
     protected function getRequestData()
     {
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new LogicException('No current request found.');
+        }
+
         return array(
-            'permalink'  => $this->request->getUri(),
-            'user_ip'    => $this->request->getClientIp(),
-            'user_agent' => $this->request->server->get('HTTP_USER_AGENT'),
-            'referrer'   => $this->request->server->get('HTTP_REFERER'),
+            'permalink'  => $request->getUri(),
+            'user_ip'    => $request->getClientIp(),
+            'user_agent' => $request->server->get('HTTP_USER_AGENT'),
+            'referrer'   => $request->server->get('HTTP_REFERER'),
         );
     }
 }

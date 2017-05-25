@@ -8,16 +8,11 @@
 
         <service id="ornicar_akismet.akismet_stub" class="Ornicar\AkismetBundle\Akismet\AkismetStub" public="false" />
 
-        <service id="ornicar_akismet.akismet_real" class="Ornicar\AkismetBundle\Akismet\AkismetReal" scope="request" public="false">
+        <service id="ornicar_akismet.akismet_real" class="Ornicar\AkismetBundle\Akismet\AkismetReal" shared="false">
             <argument type="service" id="ornicar_akismet.adapter" />
-            <argument type="service" id="request" />
+            <argument type="service" id="request_stack" />
             <argument /> <!-- throw exceptions -->
             <argument type="service" id="logger" on-invalid="null" />
-        </service>
-
-        <service id="ornicar_akismet.adapter.buzz" class="Ornicar\AkismetBundle\Adapter\AkismetBuzzAdapter" public="false">
-            <argument /> <!-- site url -->
-            <argument /> <!-- api key -->
         </service>
 
         <service id="ornicar_akismet.adapter.guzzle" class="Ornicar\AkismetBundle\Adapter\AkismetGuzzleAdapter" public="false">

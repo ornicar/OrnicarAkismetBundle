@@ -12,8 +12,6 @@ class AkismetGuzzleAdapter implements AkismetAdapterInterface
     protected $client;
 
     /**
-     * Constructor
-     *
      * @param string $blogUrl
      * @param strint $apiKey
      */
@@ -25,17 +23,19 @@ class AkismetGuzzleAdapter implements AkismetAdapterInterface
         ));
     }
 
-    /**
-     * Returns TRUE if Akismet thinks the data is spam
-     *
-     * @param array $data
-     * @return boolean
-     */
-    public function isSpam(array $data)
+    public function isSpam(array $data): bool
     {
         $data['blog'] = $this->client->getConfig('blog_url');
         $request = $this->client->post('/1.1/comment-check', null, http_build_query($data));
 
         return 'true' == (string) $request->send()->getBody();
+    }
+
+    public function submitSpam(array $data): bool
+    {
+        $data['blog'] = $this->client->getConfig('blog_url');
+        $request = $this->client->post('/1.1/submit-spam', null, http_build_query($data));
+
+        $request->send()->getBody();
     }
 }
