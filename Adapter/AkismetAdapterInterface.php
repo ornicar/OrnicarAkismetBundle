@@ -6,9 +6,11 @@ interface AkismetAdapterInterface
 {
     /**
      * Tells if the data looks like spam
-     *
-     * @param array $data
-     * @return boolean
      */
-    function isSpam(array $data);
+    function isSpam(array $data): bool;
+
+    /**
+     * This call is for submitting comments that weren’t marked as spam but should have been.
+     */
+    function submitSpam(array $data);
 }

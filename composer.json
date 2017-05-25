@@ -18,14 +18,10 @@
     ],
 
     "require": {
-        "php": ">=5.3.0",
+        "php": "^7.0",
         "symfony/framework-bundle": "~2.8|~3.0",
         "psr/log": "~1.0",
-        "kriswallsmith/buzz" : "*"
-
-    },
-    "suggests": {
-        "guzzle/guzzle": "*"
+        "guzzle/guzzle": "~3.8"
     },
 
     "autoload": {

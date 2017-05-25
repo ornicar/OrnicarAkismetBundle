@@ -7,35 +7,38 @@ use Guzzle\Service\Client;
 class AkismetGuzzleAdapter implements AkismetAdapterInterface
 {
     /**
+     * @var string
+     */
+    protected $blogUrl;
+
+    /**
      * @var Client Guzzle client
      */
     protected $client;
 
     /**
-     * Constructor
-     *
      * @param string $blogUrl
      * @param strint $apiKey
      */
     public function __construct($blogUrl, $apiKey)
     {
-        $this->client = new Client('http://{{ api_key }}.rest.akismet.com', array(
-            'api_key'  => $apiKey,
-            'blog_url' => $blogUrl
-        ));
+        $this->blogUrl = $blogUrl;
+        $this->client = new Client(sprintf('http://%s.rest.akismet.com', $apiKey));
     }
 
-    /**
-     * Returns TRUE if Akismet thinks the data is spam
-     *
-     * @param array $data
-     * @return boolean
-     */
-    public function isSpam(array $data)
+    public function isSpam(array $data): bool
     {
-        $data['blog'] = $this->client->getConfig('blog_url');
+        $data['blog'] = $this->blogUrl;
         $request = $this->client->post('/1.1/comment-check', null, http_build_query($data));
 
         return 'true' == (string) $request->send()->getBody();
+    }
+
+    public function submitSpam(array $data)
+    {
+        $data['blog'] = $this->blogUrl;
+        $request = $this->client->post('/1.1/submit-spam', null, http_build_query($data));
+
+        $request->send()->getBody();
     }
 }

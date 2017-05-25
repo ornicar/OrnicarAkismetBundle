@@ -27,7 +27,7 @@ class Configuration
                 ->scalarNode('url')->isRequired()->end()
                 ->scalarNode('api_key')->isRequired()->end()
                 ->scalarNode('service')->defaultValue('ornicar_akismet.akismet_real')->end()
-                ->scalarNode('adapter')->defaultValue('ornicar_akismet.adapter.buzz')->end()
+                ->scalarNode('adapter')->defaultValue('ornicar_akismet.adapter.guzzle')->end()
                 ->scalarNode('throw_exceptions')->defaultValue('%kernel.debug%')
             ->end()
         ->end();
