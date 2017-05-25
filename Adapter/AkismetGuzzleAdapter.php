@@ -39,6 +39,6 @@ class AkismetGuzzleAdapter implements AkismetAdapterInterface
         $data['blog'] = $this->blogUrl;
         $request = $this->client->post('/1.1/submit-spam', null, http_build_query($data));
 
-        $request->send()->getBody();
+        $request->send();
     }
 }

@@ -68,13 +68,13 @@ class AkismetReal implements AkismetInterface
     {
         $fullData = array_merge($this->getRequestData(), $data);
 
-        if ($this->throwExceptions) {
-            return $this->adapter->isSpam($fullData);
-        }
-
         try {
             return $this->adapter->isSpam($fullData);
         } catch (\Exception $e) {
+            if ($this->throwExceptions) {
+                throw $e;
+            }
+
             if ($this->logger) {
                 $this->logger->warn(sprintf('%s: %s(%s)', get_class($this), get_class($e), $e->getMessage()));
             }
@@ -87,13 +87,13 @@ class AkismetReal implements AkismetInterface
     {
         $fullData = array_merge($this->getRequestData(), $data);
 
-        if ($this->throwExceptions) {
-            return $this->adapter->submitSpam($fullData);
-        }
-
         try {
             return $this->adapter->submitSpam($fullData);
         } catch (\Exception $e) {
+            if ($this->throwExceptions) {
+                throw $e;
+            }
+
             if ($this->logger) {
                 $this->logger->warn(sprintf('%s: %s(%s)', get_class($this), get_class($e), $e->getMessage()));
             }
