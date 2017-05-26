@@ -23,8 +23,12 @@ class AkismetStub implements AkismetInterface
      *
      * @return bool true if it is spam
      */
-    public function isSpam(array $data)
+    public function isSpam(array $data): bool
     {
         return false;
+    }
+
+    function submitSpam(array $data)
+    {
     }
 }

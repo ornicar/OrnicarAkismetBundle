@@ -64,17 +64,36 @@ class AkismetReal implements AkismetInterface
      *
      * @return bool true if it is spam
      */
-    public function isSpam(array $data)
+    public function isSpam(array $data): bool
     {
         $fullData = array_merge($this->getRequestData(), $data);
-
-        if ($this->throwExceptions) {
-            return $this->adapter->isSpam($fullData);
-        }
 
         try {
             return $this->adapter->isSpam($fullData);
         } catch (\Exception $e) {
+            if ($this->throwExceptions) {
+                throw $e;
+            }
+
+            if ($this->logger) {
+                $this->logger->warn(sprintf('%s: %s(%s)', get_class($this), get_class($e), $e->getMessage()));
+            }
+
+            return false;
+        }
+    }
+
+    function submitSpam(array $data)
+    {
+        $fullData = array_merge($this->getRequestData(), $data);
+
+        try {
+            return $this->adapter->submitSpam($fullData);
+        } catch (\Exception $e) {
+            if ($this->throwExceptions) {
+                throw $e;
+            }
+
             if ($this->logger) {
                 $this->logger->warn(sprintf('%s: %s(%s)', get_class($this), get_class($e), $e->getMessage()));
             }

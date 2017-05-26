@@ -30,10 +30,6 @@ class OrnicarAkismetExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('config.xml');
 
-        $container->getDefinition('ornicar_akismet.adapter.buzz')
-            ->replaceArgument(0, $config['url'])
-            ->replaceArgument(1, $config['api_key']);
-
         $container->getDefinition('ornicar_akismet.adapter.guzzle')
             ->replaceArgument(0, $config['url'])
             ->replaceArgument(1, $config['api_key']);
