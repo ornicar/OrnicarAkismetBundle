@@ -2,7 +2,7 @@
 
 namespace Ornicar\AkismetBundle\Adapter;
 
-use Guzzle\Service\Client;
+use GuzzleHttp\Client;
 
 class AkismetGuzzleAdapter implements AkismetAdapterInterface
 {
@@ -12,7 +12,7 @@ class AkismetGuzzleAdapter implements AkismetAdapterInterface
     protected $blogUrl;
 
     /**
-     * @var Client Guzzle client
+     * @var Client
      */
     protected $client;
 
@@ -23,22 +23,20 @@ class AkismetGuzzleAdapter implements AkismetAdapterInterface
     public function __construct($blogUrl, $apiKey)
     {
         $this->blogUrl = $blogUrl;
-        $this->client = new Client(sprintf('http://%s.rest.akismet.com', $apiKey));
+        $this->client = new Client(['base_uri' => sprintf('http://%s.rest.akismet.com', $apiKey)]);
     }
 
     public function isSpam(array $data): bool
     {
         $data['blog'] = $this->blogUrl;
-        $request = $this->client->post('/1.1/comment-check', null, http_build_query($data));
+        $response = $this->client->post('/1.1/comment-check', ['form_params' => $data]);
 
-        return 'true' == (string) $request->send()->getBody();
+        return 'true' == $response->getBody()->getContents();
     }
 
     public function submitSpam(array $data)
     {
         $data['blog'] = $this->blogUrl;
-        $request = $this->client->post('/1.1/submit-spam', null, http_build_query($data));
-
-        $request->send();
+        $this->client->post('/1.1/submit-spam', ['form_params' => $data]);
     }
 }

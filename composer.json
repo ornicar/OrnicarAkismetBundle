@@ -21,7 +21,7 @@
         "php": "^7.0",
         "symfony/framework-bundle": "~2.8|~3.0",
         "psr/log": "~1.0",
-        "guzzle/guzzle": "~3.8"
+        "guzzlehttp/guzzle": "~6.0"
     },
 
     "autoload": {
