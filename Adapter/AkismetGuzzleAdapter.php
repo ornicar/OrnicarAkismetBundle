@@ -29,14 +29,22 @@ class AkismetGuzzleAdapter implements AkismetAdapterInterface
     public function isSpam(array $data): bool
     {
         $data['blog'] = $this->blogUrl;
-        $response = $this->client->post('/1.1/comment-check', ['form_params' => $data]);
+        $response = $this->client->post('/1.1/comment-check', ['form_params' => $data])->getBody()->getContents();
 
-        return 'true' == $response->getBody()->getContents();
+        if (!in_array($response, ['true', 'false'])) {
+            throw new InvalidResponseException($response);
+        }
+
+        return 'true' == $response;
     }
 
     public function submitSpam(array $data)
     {
         $data['blog'] = $this->blogUrl;
-        $this->client->post('/1.1/submit-spam', ['form_params' => $data]);
+
+        $response = $this->client->post('/1.1/submit-spam', ['form_params' => $data])->getBody()->getContents();
+        if ('Thanks for making the web a better place.' !== $response) {
+            throw new InvalidResponseException($response);
+        }
     }
 }
