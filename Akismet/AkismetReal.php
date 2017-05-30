@@ -85,10 +85,8 @@ class AkismetReal implements AkismetInterface
 
     function submitSpam(array $data)
     {
-        $fullData = array_merge($this->getRequestData(), $data);
-
         try {
-            return $this->adapter->submitSpam($fullData);
+            return $this->adapter->submitSpam($data);
         } catch (\Exception $e) {
             if ($this->throwExceptions) {
                 throw $e;
