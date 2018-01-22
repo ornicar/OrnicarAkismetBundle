@@ -3,6 +3,7 @@
 namespace Ornicar\AkismetBundle\Adapter;
 
 use GuzzleHttp\Client;
+use Ornicar\AkismetBundle\Adapter\Exception\InvalidResponseException;
 
 class AkismetGuzzleAdapter implements AkismetAdapterInterface
 {

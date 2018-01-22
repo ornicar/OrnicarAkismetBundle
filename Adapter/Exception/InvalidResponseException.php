@@ -2,6 +2,6 @@
 
 namespace Ornicar\AkismetBundle\Adapter\Exception;
 
-use GuzzleHttp\Exception\BadResponseException;
+use RuntimeException;
 
-class InvalidResponseException extends BadResponseException {}
+class InvalidResponseException extends RuntimeException {}
