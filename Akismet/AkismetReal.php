@@ -76,7 +76,7 @@ class AkismetReal implements AkismetInterface
             }
 
             if ($this->logger) {
-                $this->logger->warn(sprintf('%s: %s(%s)', get_class($this), get_class($e), $e->getMessage()));
+                $this->logger->warning(sprintf('%s: %s(%s)', get_class($this), get_class($e), $e->getMessage()));
             }
 
             return false;
@@ -93,7 +93,7 @@ class AkismetReal implements AkismetInterface
             }
 
             if ($this->logger) {
-                $this->logger->warn(sprintf('%s: %s(%s)', get_class($this), get_class($e), $e->getMessage()));
+                $this->logger->warning(sprintf('%s: %s(%s)', get_class($this), get_class($e), $e->getMessage()));
             }
 
             return false;
